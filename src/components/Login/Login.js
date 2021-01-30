@@ -49,13 +49,15 @@ export default function Login(){
     const history = useHistory();
     
     async function handleSubmit(e){
-        console.log("in handleSubmit")
         e.preventDefault()
-
+        console.log("in handleSubmit")
+        console.log("emailRef " + emailRef.current.value)
+        console.log("passwordRef " + passwordRef.current.value)
+        
         try {
             setError('')
             setLoading(true)
-            await login(document.getElementById("email").value, document.getElementById("password").value)
+            await login(emailRef.current.value, passwordRef.current.value)
             console.log(login)
             history.push('/User')
         } catch{
@@ -71,9 +73,7 @@ export default function Login(){
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
+          <Typography component="h1" variant="h5">Sign in</Typography>
           <form className={classes.form} noValidate onSubmit ={handleSubmit}>
             <TextField
               variant="outlined"
@@ -85,6 +85,7 @@ export default function Login(){
               name="email"
               autoComplete="email"
               autoFocus
+              inputRef={emailRef}
             />
             <TextField
               variant="outlined"
@@ -96,6 +97,7 @@ export default function Login(){
               type="password"
               id="password"
               autoComplete="current-password"
+              inputRef={passwordRef}
             />
             <Button
               type="submit"
@@ -103,9 +105,7 @@ export default function Login(){
               variant="contained"
               color="primary"
               className={classes.submit}
-            >
-              Sign In
-            </Button>
+            >Sign In</Button>
             <Grid container>
               <Grid item>
                 <Link variant="body2" to ="/SignUp">
