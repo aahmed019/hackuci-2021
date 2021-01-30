@@ -9,9 +9,9 @@ import SideDrawer from './components/Navigation/SideDrawer/SideDrawer';
 import Toolbar from './components/Navigation/Toolbar/Toolbar';
 import './App.css';
 import Users from './components/User/User'
-import OrderPage from './components/Order/Order';
+import Order from './components/Order/Order';
 
-const  App=(props)=> {
+const  App = (props)=> {
 
  const [showSideDrawer, setSideDrawer] = useState(false);
 
@@ -33,10 +33,10 @@ const  App=(props)=> {
           <Switch>
             <Route path='/Login' component={Login}/>
             <Route path='/SignUp' component={SignUp}/>
-            <Route path="/Home" />
+            <Route path="/Home"  component = {Users}/>
             <Route path="/User" component={Users}/>
             <Route path="Volunteer"/>
-            <Route path="/Order" component={OrderPage}/>
+            <Route path="/Order" component={Order}/>
             <Route path="/Confirmation" component={Confirmation}/>
             <Redirect from="/" to="/Login"/>
           </Switch>

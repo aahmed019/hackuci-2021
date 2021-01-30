@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Fire from '../../firebaseConfig';
-import {Card, Col, Row} from "react-bootstrap";
+import {Card, Row} from "react-bootstrap";
 
 export default function OrderPage(){
     const[FoodItems, setFoodItems] = useState([])
@@ -31,7 +31,7 @@ export default function OrderPage(){
         getData()
     },[])  
 
-    return(<div className='chef-background-boi'>
+    return(<div>
                 <h2>All items:</h2>
         <Row>
                 {FoodItems.map(function(item, i){
@@ -47,7 +47,7 @@ export default function OrderPage(){
                         {item.description}
                         </Card.Text>
                     </Card.Body>
-                    <button>Add to cart</button>
+                    <button onClick >Add to cart</button>
                     </Card>
                 })} 
                 </Row> 

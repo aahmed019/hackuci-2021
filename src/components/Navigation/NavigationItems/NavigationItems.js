@@ -10,7 +10,7 @@ const navigationItems = (props)=>{
             
                 <NavigationItem  link="/Login">Login</NavigationItem>
                 <NavigationItem link="/Home">Home</NavigationItem>
-                <NavigationItem link="/Orders">Orders</NavigationItem>
+                <NavigationItem link="/Order">Orders</NavigationItem>
                 <NavigationItem link="/Cart">Cart</NavigationItem>
             </ul>
         </div>
