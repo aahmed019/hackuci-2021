@@ -168,6 +168,25 @@ export default function SignUp(){
                         inputRef={passwordConfirmRef}
                     />
                     </Grid>
+                    <Grid item xs={12}>                        
+                        <FormControlLabel
+                            control={<Checkbox value="allowExtraEmails" color="primary" />}
+                            label="Sign Up as a Volunteer"
+                        />
+                        <input
+                            accept="image/*"
+                            className={classes.input}
+                            style={{ display: 'none' }}
+                            id="raised-button-file"
+                            single
+                            type="file"
+                            />
+                            <label htmlFor="raised-button-file">
+                            <Button variant="raised" component="span" className={classes.button}>
+                                Upload Work Permit
+                            </Button>
+                        </label> 
+                    </Grid>                    
                 </Grid>
                 <Button
                     type="submit"
