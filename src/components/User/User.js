@@ -31,6 +31,7 @@ export default function Users(){
                             <strong>Email:</strong> {email}<br/>
                             <strong>Username:</strong> {userName}<br/>
                             <strong>Name:</strong> {name}<br/>
+                            <strong>Balance:</strong> {name}<br/>
                             <strong>Orders:</strong> {}<br/>
                         </div>
                     </div>:
