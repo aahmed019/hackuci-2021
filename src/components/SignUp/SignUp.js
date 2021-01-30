@@ -41,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
 export default function SignUp(){
 
     const classes = useStyles();
-
     const emailRef = useRef();
     const userRef = useRef();
     const nameRef = useRef();
