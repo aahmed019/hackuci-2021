@@ -192,19 +192,11 @@ export default function DeliveryPage(props){
                             let price;
                             let obj=[];
                            
-                            if(item.id[0]==='m')
-                            {
-                                obj=meal.filter(m=>m[0].id === item.id)[0]
+                                obj=groceries.filter(m=>m[0].id === item.id)[0]
                                 if(obj)
                                 price=obj[0].price
 
-                            }
-                            else{
-                                obj=drink.filter(d=>d[0].id === item.id)[0]
-                                if(obj)
-                                price=obj[0].price
 
-                            }
                             return(<Row key={item.id} className="DRows"> 
                                     <Col xs={4}>
                                         {item.id}
