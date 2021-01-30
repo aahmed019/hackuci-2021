@@ -5,6 +5,7 @@ import Confirmation from './components/Confirmation/Confirmation';
 import {BrowserRouter,Switch, Route, Redirect} from 'react-router-dom';
 import {AuthProvider} from './contexts/AuthContext';
 import './App.css';
+import Users from './components/User/User'
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
             <Route path='/Login' component={Login}/>
             <Route path='/SignUp' component={SignUp}/>
             <Route path="/Home" />
-            <Route path="/User"/>
+            <Route path="/User" component={Users}/>
             <Route path="Volunteer"/>
             <Route path="/Confirmation" component={Confirmation}/>
             <Redirect from="/" to="/Login"/>
