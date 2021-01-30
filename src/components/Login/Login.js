@@ -1,71 +1,154 @@
-import React, {useRef, useState}from 'react'
-import {Form, Button, Card, Alert} from 'react-bootstrap'
+import React, {useEffect, useRef, useState}from 'react'
 import { useAuth } from '../../contexts/AuthContext'
-import { Container } from 'react-bootstrap';
-import {Link, useHistory} from 'react-router-dom';
-import classes from './Login.module.css'
+import { useHistory, Link } from 'react-router-dom';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Fire from '../../firebaseConfig';
+const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(1),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+    button: {
+      margin: theme.spacing(1,2,2),
+      
+    }
+  }));
 
 export default function Login(){
-        const emailRef = useRef();
-        const passwordRef = useRef();
-        const { login } = useAuth();
-        const [error, setError] = useState('');
-        const [loading, setLoading] = useState(false);
-        const history = useHistory();
-        
-        async function handleSubmit(e){
-            e.preventDefault()
 
-            try {
-                setError('')
-                setLoading(true)
-                await login(emailRef.current.value, passwordRef.current.value)
-                history.push('/User')
-            } catch{
-                setError('Failed to sign in. Please try again!')
-            }
-            setLoading(false)
-        }
+    const classes = useStyles();
+
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const [loginType,setLoginType]= useState('Users');
+    const { login, currentUser } = useAuth();
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const history = useHistory();
+    let database =Fire.db;
+
+
+    
+    async function handleSubmit(e){
+       // console.log("in handleSubmit")
+        e.preventDefault()
+            setError('')
+            setLoading(true)
+              console.log(currentUser);
+
+            login(emailRef.current.value, passwordRef.current.value).then(()=>{
+               history.push('/User')
+            }).catch(error=>{
+               setError('Failed to sign in. Please try again!')
+               console.log(error.message);
+            })
+        setLoading(false)
+    }
+
     return(
-        <div className = {classes.backgroundBoi} >
-        <Container >
-            <div >
-                <Card>
-                    <Card.Body > 
-                        <h2 >Log In</h2>
-                            {error && <Alert variant ="danger">{error}</Alert>}
-                        <Form onSubmit ={handleSubmit}>
-                            <Form.Group id = "email ">
-                                <Form.Label ><strong>Email</strong></Form.Label>
-                                <Form.Control type = "email" ref={emailRef} required/>                 
-                            </Form.Group>
-                            <Form.Group id = "password">
-                                <Form.Label ><strong>Password</strong></Form.Label>
-                                <Form.Control type = "password" ref={passwordRef} required/>                 
-                            </Form.Group>
-                            {/* <Form.Group id = "name-confirm">
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control type = "text" ref={nameRef} required/>                 
-                            </Form.Group> */}
-                            
-                                <Button  type = "submit" disabled={loading}>
-                                    <strong>Log in</strong>
-                                </Button>
-                            
-                        </Form>
-                        {/* <div className = "w-100 text-center mt-3 navItems">
-                            <Link className ="navItems" to ='/forgot-password'>
-                            Forgot Password?
-                            </Link>
-                        </div> */}
-                    </Card.Body>
-                </Card>
-                <div className="w-100 text-center mt-2">
-                    <strong>Need an Account?</strong> <Link className = "navItems"to ="/SignUp"><strong>Click Here!</strong></Link>
-                </div>
-            </div>
-        </Container>
-        </div>
+        <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            {loginType } Log in
+          </Typography>
+          <form className={classes.form} noValidate onSubmit ={handleSubmit}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              inputRef={emailRef}
+              autoFocus
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              inputRef={passwordRef}
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Log In
+            </Button>
+            <Grid container style={{justifyContent: 'center'}}>
+              <Grid item>
+              <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={()=>{
+                setLoginType('Users');
+              }}
+            >
+              User
+            </Button>
 
+              </Grid>
+              <Grid item>
+              <Button 
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={()=>{
+                setLoginType('Volunteers');
+              }}
+            >
+              Volunteer
+            </Button>
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item>
+                <Link variant="body2" to ="/SignUp">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+        <Box mt={8}>
+        </Box>
+      </Container>
     );
 }
