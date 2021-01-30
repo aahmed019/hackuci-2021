@@ -52,7 +52,7 @@ export default function SignUp(){
 
                 }).catch(error=> {
                     console.log(error.message);
-                    setError(error);
+                    setError(error.message);
                 });
                 history.push('/Confirmation')
             setLoading(false)

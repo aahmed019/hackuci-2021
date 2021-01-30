@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {Container, Card, Button, Alert} from "react-bootstrap"
 import {useAuth} from "../../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
@@ -15,8 +15,52 @@ export default function Users(){
   const [email, setEmail] = useState("");
   const [position, setPosition] = useState("");
   const [hours, setHours] = useState(0);
+  const [Balance, setBalance] = useState(0);
 
 
+  const getData = async() =>{
+      
+    database.getCollection('Users').doc(currentUser.email).get().then(function(doc){
+        if(doc.exists){
+          setEmail(doc.data().email)
+          setUsername(doc.data().username);
+          setName(doc.data().name);
+          setBalance(doc.data().balance);
+        }
+        else{
+          return;
+          //console.log('no doc found')
+        }
+      })
+      
+      database.getCollection('Volunteers').doc(currentUser.email).get().then(function(doc){
+        if(doc.exists){
+          setEmail(doc.data().email);
+          setName(doc.data().name);
+          setPosition(doc.data().position);
+          setHours(doc.data().hours)
+        }
+        else{
+          console.log('no doc found')
+        }
+      })
+}
+
+  useEffect(() =>{
+    getData()
+},[])
+
+
+  async function handleLogout() {
+    setError("")
+    setEmail('')
+    try {
+      await logout()
+      history.push("/")
+    } catch {
+      setError("Failed to log out")
+    }
+  }
 
     return (
         <Container className = "d-flex align-items-center justify-content-center" style ={{minHeight: "50vh", background: "red", maxWidth:"25vw", margin:'auto'}}>
@@ -31,7 +75,7 @@ export default function Users(){
                             <strong>Email:</strong> {email}<br/>
                             <strong>Username:</strong> {userName}<br/>
                             <strong>Name:</strong> {name}<br/>
-                            <strong>Balance:</strong> {name}<br/>
+                            <strong>Balance:</strong> {Balance}<br/>
                             <strong>Orders:</strong> {}<br/>
                         </div>
                     </div>:
@@ -46,7 +90,7 @@ export default function Users(){
                     </Card.Body>
                 </Card>
                 <div className="w-100 text-center mt-2">
-                    <Button variant="link" onClick={() => console.log("eat")} className="font-text">
+                    <Button variant="link" onClick={handleLogout} className="font-text">
                     Log Out
                     </Button>
                 </div>
