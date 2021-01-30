@@ -4,11 +4,10 @@ import { useAuth } from '../../contexts/AuthContext'
 import { Container } from 'react-bootstrap';
 import {Link, useHistory} from 'react-router-dom'
 import './Login.css';
-import Footer from '../Footer/Footer';
 export default function Login(){
         const emailRef = useRef();
         const passwordRef = useRef();
-        const {login} = useAuth();
+        const { login } = useAuth();
         const [error, setError] = useState('');
         const [loading, setLoading] = useState(false);
         const history = useHistory();
@@ -53,11 +52,11 @@ export default function Login(){
                                 </Button>
                             
                         </Form>
-                        <div className = "w-100 text-center mt-3 navItems">
+                        {/* <div className = "w-100 text-center mt-3 navItems">
                             <Link className ="navItems" to ='/forgot-password'>
                             Forgot Password?
                             </Link>
-                        </div>
+                        </div> */}
                     </Card.Body>
                 </Card>
                 <div className="w-100 text-center mt-2">
@@ -65,7 +64,6 @@ export default function Login(){
                 </div>
             </div>
         </Container>
-        <Footer/>
         </div>
 
     );
