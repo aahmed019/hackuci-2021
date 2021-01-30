@@ -30,7 +30,7 @@ export default function SignUp(){
                 setError('');
                 setLoading(true);
 
-                await signup(emailRef.current.value, passwordRef.current.value).then(response =>{
+                await signup(emailRef.current.value, passwordRef.current.value)
 
                     db.getCollection('SignUp').doc(emailRef.current.value).set({
                         username: userRef.current.value,
@@ -49,11 +49,6 @@ export default function SignUp(){
                             setError(error);
                             
                         });
-
-                }).catch(error=> {
-                    console.log(error.message);
-                    setError(error);
-                });
                 history.push('/Confirmation')
             setLoading(false)
         }

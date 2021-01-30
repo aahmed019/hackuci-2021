@@ -10,9 +10,8 @@ function App() {
   return (
     <div className="App">
        <AuthProvider>  
-  
-      <BrowserRouter>
-      
+         <BrowserRouter>
+        
           <Switch>
             <Route path='/Login' component={Login}/>
             <Route path='/SignUp' component={SignUp}/>
@@ -23,7 +22,7 @@ function App() {
             <Redirect from="/" to="/Login"/>
           </Switch>
       
-      </BrowserRouter>
+         </BrowserRouter>
       </AuthProvider>
     </div>
   );
