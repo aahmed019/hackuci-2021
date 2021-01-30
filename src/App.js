@@ -6,6 +6,7 @@ import {BrowserRouter,Switch, Route, Redirect} from 'react-router-dom';
 import {AuthProvider} from './contexts/AuthContext';
 import './App.css';
 import Users from './components/User/User'
+import OrderPage from './components/Order/Order';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path="/Home" />
             <Route path="/User" component={Users}/>
             <Route path="Volunteer"/>
+            <Route path="/Order" component={OrderPage}/>
             <Route path="/Confirmation" component={Confirmation}/>
             <Redirect from="/" to="/Login"/>
           </Switch>
