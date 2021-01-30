@@ -43,7 +43,7 @@ export default function SignUp(){
                 signup(emailRef.current.value, passwordRef.current.value)
                 .then(()=>{
                     db.getCollection(signUpType).doc(emailRef.current.value).set(userData);
-                    history('/Confirmation');
+                    history.push('/Confirmation');
                 })
                 .catch(error=>{
                     //console.log(error);

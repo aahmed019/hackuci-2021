@@ -30,10 +30,7 @@ const useStyles = makeStyles((theme) => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
-    button: {
-      margin: theme.spacing(1,2,2),
-      
-    }
+
   }));
 
 export default function Login(){
@@ -42,7 +39,6 @@ export default function Login(){
 
     const emailRef = useRef();
     const passwordRef = useRef();
-    const [loginType,setLoginType]= useState('Users');
     const { login, currentUser } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -57,8 +53,7 @@ export default function Login(){
             setError('')
             setLoading(true)
               console.log(currentUser);
-
-            login(emailRef.current.value, passwordRef.current.value).then(()=>{
+              login(emailRef.current.value, passwordRef.current.value).then(()=>{
                history.push('/User')
             }).catch(error=>{
                setError('Failed to sign in. Please try again!')
@@ -75,7 +70,7 @@ export default function Login(){
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            {loginType } Log in
+               Log in
           </Typography>
           <form className={classes.form} noValidate onSubmit ={handleSubmit}>
             <TextField
@@ -111,33 +106,7 @@ export default function Login(){
             >
               Log In
             </Button>
-            <Grid container style={{justifyContent: 'center'}}>
-              <Grid item>
-              <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={()=>{
-                setLoginType('Users');
-              }}
-            >
-              User
-            </Button>
 
-              </Grid>
-              <Grid item>
-              <Button 
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={()=>{
-                setLoginType('Volunteers');
-              }}
-            >
-              Volunteer
-            </Button>
-              </Grid>
-            </Grid>
             <Grid container>
               <Grid item>
                 <Link variant="body2" to ="/SignUp">
