@@ -19,12 +19,7 @@ export default function DeliveryPage(props){
     const[destination, setDestination] = useState({})
    // const [cart,setCart]= useState([])
 
-   
-
-
    function newTest(){
-    let ori = {}
-   let dest = {}
     Radar.autocomplete({
         query: '20 jay street brooklyn ny',
         limit: 1
