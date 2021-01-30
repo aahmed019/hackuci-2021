@@ -3,17 +3,75 @@ import { useAuth } from '../../contexts/AuthContext';
 import {Row,Col,Button, Container} from 'react-bootstrap'
 import Card from 'react-bootstrap/Card'
 import Fire from '../../firebaseConfig'
+import Radar from 'radar-sdk-js';
 
 export default function DeliveryPage(props){
-
+    
+    Radar.initialize('prj_test_pk_ab0d7aa984cb118fe0d8dc09cff5a18f7c187a0d')
     const db =Fire.db;
     const{currentUser}=useAuth()
     const[orders,setOrder] = useState([])
     const[staffEmail,setStaffEmail]=useState("")
     const[staffType,setType]= useState("")
+    const[distance,setDistance]= useState(0)
     const[meal,setMeal]=useState([])
     const[drink,setDrink]=useState([])
+    const[original, setOriginal] = useState({})
+    const[destination, setDestination] = useState({})
    // const [cart,setCart]= useState([])
+
+   
+
+
+   function newTest(){
+    let ori = {}
+   let dest = {}
+    Radar.autocomplete({
+        query: '20 jay street brooklyn ny',
+        limit: 1
+      }, function(err, result) {
+        if (!err) {
+            setOriginal({...result.addresses[0]})
+        }
+      });
+
+      Radar.autocomplete({
+        query: '472 86th St Brooklyn NY',
+        limit: 1
+      }, function(err, result) {
+        if (!err) {
+            setDestination({...result.addresses[0]})
+        }
+      })
+
+      
+      getDist()
+   }
+
+  
+    function getDist(){
+    Radar.getDistance({
+        origin: {
+          latitude: original.latitude,
+          longitude: original.longitude
+        },
+        destination: {
+            latitude: destination.latitude,
+            longitude: destination.longitude
+        },
+        modes: [
+          'foot',
+        ],
+        units: 'imperial'
+      }, function(err, result) {
+        if (!err) {
+            setDistance(result.routes.foot.distance.text)
+        }
+        else{
+            console.log(err)
+        }
+      });
+   }
 
     const Bid=(OID)=>{
         let taken="a";
@@ -52,7 +110,7 @@ export default function DeliveryPage(props){
 
     useEffect(()=>{
         getData()
-
+        newTest()
     },[])
 
     const getData=()=>{
@@ -108,9 +166,9 @@ export default function DeliveryPage(props){
     <div>
     <div>
     <br/>
-           <br/>
-           <br/>
-           <br/>
+    <br/>
+    <br/>
+    <br/>
    
     <h1>Delivery Page</h1>
     
@@ -186,7 +244,11 @@ export default function DeliveryPage(props){
                         
                 </Row>
               )})}
+    
 
+    <h1>{distance}</h1>
+    <h1>{parseFloat(distance) * 2} hours in total!</h1>
+    
    
     </div>
     </div>)
