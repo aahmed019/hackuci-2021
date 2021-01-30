@@ -22,7 +22,7 @@ export default function SignUp(){
 
         useEffect(()=>{},[error]);
 
-        async function handleSubmit(e){
+          const handleSubmit= (e)=> {
             e.preventDefault()
             if(passwordRef.current.value !== passwordConfirmRef.current.value){
                 return setError('passwords do not match')
@@ -30,26 +30,26 @@ export default function SignUp(){
                 setError('');
                 setLoading(true);
 
-                await signup(emailRef.current.value, passwordRef.current.value)
+                const userData ={
+                    username: userRef.current.value,
+                    password: passwordRef.current.value,
+                    name: nameRef.current.value,
+                    email: emailRef.current.value,
+                    hours: 0,
+                    balance: 0,
+                    orderHistory: []
+                    };
 
-                    db.getCollection('SignUp').doc(emailRef.current.value).set({
-                        username: userRef.current.value,
-                        password: passwordRef.current.value,
-                        name: nameRef.current.value,
-                        email: emailRef.current.value,
-                        name: nameRef.current.value,
-                        hours: 0,
-                        balance: 0,
-                        orderHistory: [],
-                        }).then(() => {
-                            console.log('Sign up Successful !');
-                        })
-                        .catch(error => {                           
-                            console.error("Error writing document: ", error);
-                            setError(error);
-                            
-                        });
-                history.push('/Confirmation')
+                signup(emailRef.current.value, passwordRef.current.value)
+                .then(()=>{
+                    db.getCollection(signUpType).doc(emailRef.current.value).set(userData);
+                    history('/Confirmation');
+                })
+                .catch(error=>{
+                    //console.log(error);
+                    setError(error.message);
+                })
+
             setLoading(false)
         }
     return(
@@ -58,6 +58,10 @@ export default function SignUp(){
             <Card>
                 <Card.Body>
                     <h2 className = "text-center mb-4">Sign Up</h2>
+                    <Form.Group>
+                        <Button onClick={()=>setSignUpType('Users')}>Users</Button>
+                        <Button onClick={()=>setSignUpType('Volunteers')} >Volunteers</Button>
+                    </Form.Group>
                         {error && <Alert variant ="danger">{error}</Alert>}
                     <Form onSubmit ={handleSubmit}>
                         <Form.Group id = "email">
@@ -80,12 +84,12 @@ export default function SignUp(){
                             <Form.Label>Password Confirmation</Form.Label>
                             <Form.Control type = "password" ref={passwordConfirmRef} required/>                   
                         </Form.Group>
-                         <Form.Group id = "name-confirm">
+                         {/* <Form.Group id = "name-confirm">
                             <Form.Label>Name</Form.Label>
                             <Form.Control type = "text" ref={nameRef} required/>                 
-                        </Form.Group>
+                        </Form.Group> */}
 
-                        <Button className = "w-100" type = "submit" disabled={loading}>
+                        <Button className = "w-100" type = "submit" disabled={loading} >
                             Sign Up
                         </Button>
                     </Form>
