@@ -10,6 +10,7 @@ import Toolbar from './components/Navigation/Toolbar/Toolbar';
 import './App.css';
 import Users from './components/User/User'
 import OrderPage from './components/Order/Order';
+import DeliveryPage from './components/Orders/Delivery';
 
 const  App = (props)=> {
 
@@ -35,7 +36,7 @@ const  App = (props)=> {
             <Route path='/SignUp' component={SignUp}/>
             <Route path="/Home"  component = {Users}/>
             <Route path="/User" component={Users}/>
-            <Route path="Volunteer"/>
+            <Route path="/Volunteer" component ={DeliveryPage}/>
             <Route path="/Order" component={OrderPage}/>
             <Route path="/Confirmation" component={Confirmation}/>
             <Redirect from="/" to="/Login"/>
