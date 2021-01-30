@@ -52,18 +52,20 @@ export default function Login(){
 
     
     async function handleSubmit(e){
-       // console.log("in handleSubmit")
         e.preventDefault()
+        console.log("in handleSubmit")
+        console.log("emailRef " + emailRef.current.value)
+        console.log("passwordRef " + passwordRef.current.value)
+        
+        try {
             setError('')
             setLoading(true)
-              console.log(currentUser);
-
-            login(emailRef.current.value, passwordRef.current.value).then(()=>{
-               history.push('/User')
-            }).catch(error=>{
-               setError('Failed to sign in. Please try again!')
-               console.log(error.message);
-            })
+            await login(emailRef.current.value, passwordRef.current.value)
+            console.log(login)
+            history.push('/User')
+        } catch{
+            setError('Failed to sign in. Please try again!')
+        }
         setLoading(false)
     }
 
@@ -74,9 +76,7 @@ export default function Login(){
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            {loginType } Log in
-          </Typography>
+          <Typography component="h1" variant="h5">Sign in</Typography>
           <form className={classes.form} noValidate onSubmit ={handleSubmit}>
             <TextField
               variant="outlined"
@@ -89,6 +89,7 @@ export default function Login(){
               autoComplete="email"
               inputRef={emailRef}
               autoFocus
+              inputRef={emailRef}
             />
             <TextField
               variant="outlined"
@@ -101,6 +102,7 @@ export default function Login(){
               id="password"
               inputRef={passwordRef}
               autoComplete="current-password"
+              inputRef={passwordRef}
             />
             <Button
               type="submit"
@@ -108,36 +110,7 @@ export default function Login(){
               variant="contained"
               color="primary"
               className={classes.submit}
-            >
-              Log In
-            </Button>
-            <Grid container style={{justifyContent: 'center'}}>
-              <Grid item>
-              <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={()=>{
-                setLoginType('Users');
-              }}
-            >
-              User
-            </Button>
-
-              </Grid>
-              <Grid item>
-              <Button 
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              onClick={()=>{
-                setLoginType('Volunteers');
-              }}
-            >
-              Volunteer
-            </Button>
-              </Grid>
-            </Grid>
+            >Sign In</Button>
             <Grid container>
               <Grid item>
                 <Link variant="body2" to ="/SignUp">

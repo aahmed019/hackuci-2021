@@ -1,105 +1,192 @@
 import React, {useEffect, useRef, useState}from 'react'
-import {Form, Button, Card, Alert} from 'react-bootstrap'
+import {Form, Card, Alert} from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
-import { Container } from 'react-bootstrap';
 import {Link, useHistory} from 'react-router-dom'
 import Fire from '../../firebaseConfig';
 
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(8),
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    },
+    avatar: {
+      margin: theme.spacing(1),
+      backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+      width: '100%', // Fix IE 11 issue.
+      marginTop: theme.spacing(3),
+    },
+    submit: {
+      margin: theme.spacing(3, 0, 2),
+    },
+  }));
+
 
 export default function SignUp(){
-        const emailRef = useRef();
-        const userRef = useRef();
-        const nameRef = useRef();
-        const passwordRef = useRef();
-        const passwordConfirmRef = useRef();
-        const {signup} = useAuth();
-        const [error, setError] = useState('');
-        const [loading, setLoading] = useState(false);
-        const [signUpType, setSignUpType] = useState('User');
 
-        const history = useHistory();
-        let db = Fire.db;
+    const classes = useStyles();
+    const emailRef = useRef();
+    const userRef = useRef();
+    const nameRef = useRef();
+    const passwordRef = useRef();
+    const passwordConfirmRef = useRef();
+    const {signup} = useAuth();
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [signUpType, setSignUpType] = useState('User');
 
-        useEffect(()=>{},[error]);
+    const history = useHistory();
+    let db = Fire.db;
 
-          const handleSubmit= (e)=> {
-            e.preventDefault()
-            if(passwordRef.current.value !== passwordConfirmRef.current.value){
-                return setError('passwords do not match')
-            }
-                setError('');
-                setLoading(true);
+    useEffect(()=>{},[error]);
 
-                const userData ={
+    async function handleSubmit(e){
+        e.preventDefault()
+        if(passwordRef.current.value !== passwordConfirmRef.current.value){
+            return setError('passwords do not match')
+        }
+            setError('');
+            setLoading(true);
+
+            await signup(emailRef.current.value, passwordRef.current.value).then(response =>{
+
+                db.getCollection('SignUp').doc(emailRef.current.value).set({
                     username: userRef.current.value,
                     password: passwordRef.current.value,
                     name: nameRef.current.value,
                     email: emailRef.current.value,
+                    name: nameRef.current.value,
                     hours: 0,
                     balance: 0,
-                    orderHistory: []
-                    };
+                    orderHistory: [],
+                    }).then(() => {
+                        console.log('Sign up Successful !');
+                    })
+                    .catch(error => {                           
+                        console.error("Error writing document: ", error);
+                        setError(error);
+                        
+                    });
 
-                signup(emailRef.current.value, passwordRef.current.value)
-                .then(()=>{
-                    db.getCollection(signUpType).doc(emailRef.current.value).set(userData);
-                    history('/Confirmation');
-                })
-                .catch(error=>{
-                    //console.log(error);
-                    setError(error.message);
-                })
+            }).catch(error=> {
+                console.log(error.message);
+                setError(error.message);
+            });
+            history.push('/Confirmation')
+        setLoading(false)
+    }
 
-            setLoading(false)
-        }
     return(
-        <Container className = "d-flex align-items-center justify-content-center" style ={{minHeight: "100vh"}}>
-          <div className ="w-100" style = {{ maxWidth: '400px'}}>
-            <Card>
-                <Card.Body>
-                    <h2 className = "text-center mb-4">Sign Up</h2>
-                    <Form.Group>
-                        <Button onClick={()=>setSignUpType('Users')}>Users</Button>
-                        <Button onClick={()=>setSignUpType('Volunteers')} >Volunteers</Button>
-                    </Form.Group>
-                        {error && <Alert variant ="danger">{error}</Alert>}
-                    <Form onSubmit ={handleSubmit}>
-                        <Form.Group id = "email">
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control type = "email" ref={emailRef} required/>                 
-                        </Form.Group>
-                        <Form.Group id = "user">
-                            <Form.Label>Username</Form.Label>
-                            <Form.Control type = "text" ref={userRef} required/>                 
-                        </Form.Group>
-                        <Form.Group id = "Name">
-                            <Form.Label>Full Name</Form.Label>
-                            <Form.Control type = "text" ref={nameRef} required/>                 
-                        </Form.Group>
-                        <Form.Group id = "password">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type = "password" ref={passwordRef} required/>                 
-                        </Form.Group>
-                        <Form.Group id = "password-confirm">
-                            <Form.Label>Password Confirmation</Form.Label>
-                            <Form.Control type = "password" ref={passwordConfirmRef} required/>                   
-                        </Form.Group>
-                         {/* <Form.Group id = "name-confirm">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control type = "text" ref={nameRef} required/>                 
-                        </Form.Group> */}
-
-                        <Button className = "w-100" type = "submit" disabled={loading} >
-                            Sign Up
-                        </Button>
-                    </Form>
-                </Card.Body>
-            </Card>
-            <div className="w-100 text-center mt-2">
-                Already have an account? Go back to <Link to ="./Login">Login</Link>
-            </div>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                Sign up
+                </Typography>
+                <form className={classes.form} noValidate onSubmit ={handleSubmit}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                    <TextField
+                        autoComplete="name"
+                        name="fullName"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="full Name"
+                        label="Full Name"
+                        autoFocus
+                        inputRef={nameRef}
+                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                    <TextField
+                        autoComplete="username"
+                        name="userName"
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="userName"
+                        label="Username"
+                        autoFocus
+                        inputRef={userRef}
+                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                    <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        inputRef={emailRef}
+                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                    <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        inputRef={passwordRef}
+                    />
+                    </Grid>
+                    <Grid item xs={12}>
+                    <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        name="passwordConfirmation"
+                        label="Confirm Password"
+                        type="password"
+                        id="passwordConfirmation"
+                        autoComplete="current-password"
+                        inputRef={passwordConfirmRef}
+                    />
+                    </Grid>
+                </Grid>
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                >
+                    Sign Up
+                </Button>
+                <Grid container justify="flex-end">
+                    <Grid item>
+                    <Link variant="body2" to ="./Login">
+                        Already have an account? Sign in
+                    </Link>
+                    </Grid>
+                </Grid>
+                </form>
             </div>
         </Container>
-        
     );
 }

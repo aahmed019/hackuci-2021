@@ -31,7 +31,7 @@ export default function OrderPage(){
         getData()
     },[])  
 
-    return(<div className='chef-background-boi'>
+    return(<div>
                 <h2>All items:</h2>
         <Row>
                 {FoodItems.map(function(item, i){
