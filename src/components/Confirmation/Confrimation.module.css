@@ -1,0 +1,43 @@
+
+.container{
+    
+    /* Rectangle 1 */
+}
+.registerbox{
+    padding-top: 7%;
+    font-family: Playfair Display;
+    display: flex;
+    position: relative;
+    
+}
+.firstset{
+    padding-bottom: 10px;
+}
+.secondset{
+    padding-bottom: 10px;
+}
+.signuptitle{
+    padding-top: 80px;
+    position: relative;
+    font-family: Playfair Display;
+    color: Black;
+    font-size: 40px;
+    font-weight: 1000;
+}
+.user{
+    font-size: 20px;
+    font-family: Playfair Display;
+    color: Black;
+    font-weight: bold;
+}
+.regbutton{
+    text-align: center;
+    position: relative;
+    font-size: 40px;
+}
+.buttonoptions{
+    position: relative;
+    background-color: #161616;
+    color: #9C9523;
+    font-size: 25px;
+}
