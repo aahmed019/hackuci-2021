@@ -37,7 +37,8 @@ export default function Users(){
         if(doc.exists){
           setEmail(doc.data().email);
           setName(doc.data().name);
-          setPosition(doc.data().position);
+          setUsername(doc.data().username);
+          setPosition(doc.data().Position);
           setHours(doc.data().hours)
         }
         else{
