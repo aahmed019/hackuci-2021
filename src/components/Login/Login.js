@@ -2,8 +2,9 @@ import React, {useRef, useState}from 'react'
 import {Form, Button, Card, Alert} from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 import { Container } from 'react-bootstrap';
-import {Link, useHistory} from 'react-router-dom'
-import './Login.css';
+import {Link, useHistory} from 'react-router-dom';
+import classes from './Login.module.css'
+
 export default function Login(){
         const emailRef = useRef();
         const passwordRef = useRef();
@@ -26,20 +27,20 @@ export default function Login(){
             setLoading(false)
         }
     return(
-        <div className = "background-boi">
-        <Container className = "d-flex align-items-center justify-content-center " style ={{minHeight: "80vh"}}>
-            <div className ="w-100 " style = {{ maxWidth: '400px'}}>
-                <Card className = "card-color">
-                    <Card.Body className = "card-color"> 
-                        <h2 className = "text-center mb-4 navItems">Log In</h2>
+        <div className = {classes.backgroundBoi} >
+        <Container >
+            <div >
+                <Card>
+                    <Card.Body > 
+                        <h2 >Log In</h2>
                             {error && <Alert variant ="danger">{error}</Alert>}
                         <Form onSubmit ={handleSubmit}>
                             <Form.Group id = "email ">
-                                <Form.Label className= "navItems"><strong>Email</strong></Form.Label>
+                                <Form.Label ><strong>Email</strong></Form.Label>
                                 <Form.Control type = "email" ref={emailRef} required/>                 
                             </Form.Group>
                             <Form.Group id = "password">
-                                <Form.Label className= "navItems"><strong>Password</strong></Form.Label>
+                                <Form.Label ><strong>Password</strong></Form.Label>
                                 <Form.Control type = "password" ref={passwordRef} required/>                 
                             </Form.Group>
                             {/* <Form.Group id = "name-confirm">
@@ -47,7 +48,7 @@ export default function Login(){
                                 <Form.Control type = "text" ref={nameRef} required/>                 
                             </Form.Group> */}
                             
-                                <Button className = "w-100 sign-in btn-outline-dark" type = "submit" disabled={loading}>
+                                <Button  type = "submit" disabled={loading}>
                                     <strong>Log in</strong>
                                 </Button>
                             
@@ -60,7 +61,7 @@ export default function Login(){
                     </Card.Body>
                 </Card>
                 <div className="w-100 text-center mt-2">
-                    <strong>Need an Account?</strong> <Link className = "navItems"to ="/SignUpV2"><strong>Click Here!</strong></Link>
+                    <strong>Need an Account?</strong> <Link className = "navItems"to ="/SignUp"><strong>Click Here!</strong></Link>
                 </div>
             </div>
         </Container>

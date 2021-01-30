@@ -1,4 +1,4 @@
-import React, {useRef, useState}from 'react'
+import React, {useEffect, useRef, useState}from 'react'
 import {Form, Button, Card, Alert} from 'react-bootstrap'
 import { useAuth } from '../../contexts/AuthContext'
 import { Container } from 'react-bootstrap';
@@ -18,38 +18,38 @@ export default function SignUp(){
         const history = useHistory();
         let db = Fire.db;
 
+        useEffect(()=>{},[error]);
+
         async function handleSubmit(e){
             e.preventDefault()
-
             if(passwordRef.current.value !== passwordConfirmRef.current.value){
                 return setError('passwords do not match')
             }
+                setError('');
+                setLoading(true);
 
-            try {
-                setError('')
-                setLoading(true)
-                await signup(emailRef.current.value, passwordRef.current.value)
-                db.getCollection('SignUp').doc(emailRef.current.value).set({
-                    username: userRef.current.value,
-                    password: passwordRef.current.value,
-                    name: nameRef.current.value,
-                    email: emailRef.current.value,
-                    orderHistory: [],
-                    warnings: 0,
-                    Balance: 0,
-                    Vip: false
-                    }).then(function() {// went through
-                        console.log("Document successfully written!");
-                        
-                    })
-                    .catch(function(error) { //broke down somewhere
-                        console.error("Error writing document: ", error);
-                    });
+                await signup(emailRef.current.value, passwordRef.current.value).then(response =>{
 
-                history.push('/Confirmation')
-            } catch{
-                setError('Failed to create account')
-            }
+                    db.getCollection('SignUp').doc(emailRef.current.value).set({
+                        username: userRef.current.value,
+                        password: passwordRef.current.value,
+                        name: nameRef.current.value,
+                        email: emailRef.current.value,
+                        orderHistory: [],
+                        }).then(() => {
+                            console.log('Sign up Successful !');
+                        })
+                        .catch(error => {                           
+                            console.error("Error writing document: ", error);
+                            setError(error)
+                            
+                        });
+
+                }).catch(error=> {
+                    console.log(error.message);
+                    //setError({error: error});
+                });
+               // history.push('/Confirmation')
             setLoading(false)
         }
     return(
@@ -78,7 +78,7 @@ export default function SignUp(){
                         </Form.Group>
                         <Form.Group id = "password-confirm">
                             <Form.Label>Password Confirmation</Form.Label>
-                            <Form.Control type = "password" ref={passwordConfirmRef} required/>                 
+                            <Form.Control type = "password" ref={passwordConfirmRef} required/>                   
                         </Form.Group>
                         {/* <Form.Group id = "name-confirm">
                             <Form.Label>Name</Form.Label>
@@ -91,7 +91,7 @@ export default function SignUp(){
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">
-                Already have an account? Go back to <Link to ="./LoginV2">Login</Link>
+                Already have an account? Go back to <Link to ="./Login">Login</Link>
             </div>
             </div>
         </Container>
