@@ -9,6 +9,7 @@ import SideDrawer from './components/Navigation/SideDrawer/SideDrawer';
 import Toolbar from './components/Navigation/Toolbar/Toolbar';
 import './App.css';
 import Users from './components/User/User'
+import OrderPage from './components/Order/Order';
 
 const  App=(props)=> {
 
@@ -35,6 +36,7 @@ const  App=(props)=> {
             <Route path="/Home" />
             <Route path="/User" component={Users}/>
             <Route path="Volunteer"/>
+            <Route path="/Order" component={OrderPage}/>
             <Route path="/Confirmation" component={Confirmation}/>
             <Redirect from="/" to="/Login"/>
           </Switch>
