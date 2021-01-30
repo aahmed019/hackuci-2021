@@ -15,6 +15,8 @@ export default function SignUp(){
         const {signup} = useAuth();
         const [error, setError] = useState('');
         const [loading, setLoading] = useState(false);
+        const [signUpType, setSignUpType] = useState('User');
+
         const history = useHistory();
         let db = Fire.db;
 
@@ -35,21 +37,24 @@ export default function SignUp(){
                         password: passwordRef.current.value,
                         name: nameRef.current.value,
                         email: emailRef.current.value,
+                        name: nameRef.current.value,
+                        hours: 0,
+                        balance: 0,
                         orderHistory: [],
                         }).then(() => {
                             console.log('Sign up Successful !');
                         })
                         .catch(error => {                           
                             console.error("Error writing document: ", error);
-                            setError(error)
+                            setError(error);
                             
                         });
 
                 }).catch(error=> {
                     console.log(error.message);
-                    //setError({error: error});
+                    setError(error);
                 });
-               // history.push('/Confirmation')
+                history.push('/Confirmation')
             setLoading(false)
         }
     return(
@@ -80,10 +85,11 @@ export default function SignUp(){
                             <Form.Label>Password Confirmation</Form.Label>
                             <Form.Control type = "password" ref={passwordConfirmRef} required/>                   
                         </Form.Group>
-                        {/* <Form.Group id = "name-confirm">
+                         <Form.Group id = "name-confirm">
                             <Form.Label>Name</Form.Label>
                             <Form.Control type = "text" ref={nameRef} required/>                 
-                        </Form.Group> */}
+                        </Form.Group>
+
                         <Button className = "w-100" type = "submit" disabled={loading}>
                             Sign Up
                         </Button>
