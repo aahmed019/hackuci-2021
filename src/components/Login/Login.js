@@ -1,22 +1,17 @@
-import React, {useRef, useState}from 'react'
-import {Form, Card, Alert} from 'react-bootstrap'
+import React, {useEffect, useRef, useState}from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { useHistory, Link } from 'react-router-dom';
-import classes from './Login.module.css'
-
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-
+import Fire from '../../firebaseConfig';
 const useStyles = makeStyles((theme) => ({
     paper: {
       marginTop: theme.spacing(8),
@@ -35,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    button: {
+      margin: theme.spacing(1,2,2),
+      
+    }
   }));
 
 export default function Login(){
@@ -43,24 +42,28 @@ export default function Login(){
 
     const emailRef = useRef();
     const passwordRef = useRef();
-    const { login } = useAuth();
+    const [loginType,setLoginType]= useState('Users');
+    const { login, currentUser } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const history = useHistory();
+    let database =Fire.db;
+
+
     
     async function handleSubmit(e){
-        console.log("in handleSubmit")
+       // console.log("in handleSubmit")
         e.preventDefault()
-
-        try {
             setError('')
             setLoading(true)
-            await login(document.getElementById("email").value, document.getElementById("password").value)
-            console.log(login)
-            history.push('/User')
-        } catch{
-            setError('Failed to sign in. Please try again!')
-        }
+              console.log(currentUser);
+
+            login(emailRef.current.value, passwordRef.current.value).then(()=>{
+               history.push('/User')
+            }).catch(error=>{
+               setError('Failed to sign in. Please try again!')
+               console.log(error.message);
+            })
         setLoading(false)
     }
 
@@ -72,7 +75,7 @@ export default function Login(){
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {loginType } Log in
           </Typography>
           <form className={classes.form} noValidate onSubmit ={handleSubmit}>
             <TextField
@@ -84,6 +87,7 @@ export default function Login(){
               label="Email Address"
               name="email"
               autoComplete="email"
+              inputRef={emailRef}
               autoFocus
             />
             <TextField
@@ -95,6 +99,7 @@ export default function Login(){
               label="Password"
               type="password"
               id="password"
+              inputRef={passwordRef}
               autoComplete="current-password"
             />
             <Button
@@ -104,8 +109,35 @@ export default function Login(){
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              Log In
             </Button>
+            <Grid container style={{justifyContent: 'center'}}>
+              <Grid item>
+              <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={()=>{
+                setLoginType('Users');
+              }}
+            >
+              User
+            </Button>
+
+              </Grid>
+              <Grid item>
+              <Button 
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={()=>{
+                setLoginType('Volunteers');
+              }}
+            >
+              Volunteer
+            </Button>
+              </Grid>
+            </Grid>
             <Grid container>
               <Grid item>
                 <Link variant="body2" to ="/SignUp">
