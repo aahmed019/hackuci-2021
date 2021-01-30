@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {Container, Card, Button, Alert} from "react-bootstrap"
 import {useAuth} from "../../contexts/AuthContext"
-import { Link, useHistory } from "react-router-dom"
+import {  useHistory } from "react-router-dom"
 import Fire from '../../firebaseConfig'
 
 export default function Users(){
@@ -49,7 +49,7 @@ export default function Users(){
 
   useEffect(() =>{
     getData()
-},[])
+},[getData])
 
 
   async function handleLogout() {

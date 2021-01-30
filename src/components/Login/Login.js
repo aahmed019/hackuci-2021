@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState}from 'react'
+import React, { useRef, useState}from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { useHistory, Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
@@ -30,10 +30,7 @@ const useStyles = makeStyles((theme) => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
-    button: {
-      margin: theme.spacing(1,2,2),
-      
-    }
+
   }));
 
 export default function Login(){
@@ -42,7 +39,6 @@ export default function Login(){
 
     const emailRef = useRef();
     const passwordRef = useRef();
-    const [loginType,setLoginType]= useState('Users');
     const { login, currentUser } = useAuth();
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -89,7 +85,7 @@ export default function Login(){
               autoComplete="email"
               inputRef={emailRef}
               autoFocus
-              inputRef={emailRef}
+
             />
             <TextField
               variant="outlined"
@@ -102,7 +98,7 @@ export default function Login(){
               id="password"
               inputRef={passwordRef}
               autoComplete="current-password"
-              inputRef={passwordRef}
+
             />
             <Button
               type="submit"

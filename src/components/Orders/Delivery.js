@@ -14,8 +14,7 @@ export default function DeliveryPage(props){
     const[staffEmail,setStaffEmail]=useState("")
     const[staffType,setType]= useState("")
     const[distance,setDistance]= useState(0)
-    const[meal,setMeal]=useState([])
-    const[drink,setDrink]=useState([])
+    const[groceries,setGroceries]=useState([])
     const[original, setOriginal] = useState({})
     const[destination, setDestination] = useState({})
    // const [cart,setCart]= useState([])
@@ -140,21 +139,13 @@ export default function DeliveryPage(props){
                 setOrder(order)
 
         })}).then(()=>{
-            db.getCollection("Drinks").get().then(snapshot => {
+            db.getCollection("Groceries").get().then(snapshot => {
                 let d = [];
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     d.push([data, doc.id]);
                 })
-                setDrink(d)
-        })}).then(()=>{
-            db.getCollection("Food").get().then(snapshot => {
-                let m = [];
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    m.push([data, doc.id]);
-                })
-            setMeal(m)
+                setGroceries(d)
         })}).catch(error=> console.log("Error: ",error))
     }
 

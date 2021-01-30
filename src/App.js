@@ -9,8 +9,7 @@ import SideDrawer from './components/Navigation/SideDrawer/SideDrawer';
 import Toolbar from './components/Navigation/Toolbar/Toolbar';
 import './App.css';
 import Users from './components/User/User'
-import OrderPage from './components/Order/Order';
-import DeliveryPage from './components/Orders/Delivery';
+import OrderPage from './components/OrderPage/OrderPage';
 
 const  App = (props)=> {
 
@@ -36,7 +35,7 @@ const  App = (props)=> {
             <Route path='/SignUp' component={SignUp}/>
             <Route path="/Home"  component = {Users}/>
             <Route path="/User" component={Users}/>
-            <Route path="/Volunteer" component ={DeliveryPage}/>
+            <Route path="Volunteer"/>
             <Route path="/Order" component={OrderPage}/>
             <Route path="/Confirmation" component={Confirmation}/>
             <Redirect from="/" to="/Login"/>
