@@ -10,8 +10,7 @@ import { useAuth } from '../../contexts/AuthContext'
 
 
 export default function OrderPage(){
- 
-    const [userAuthorize, setAuthorize] = useState(true);
+
     const [step,setStep]= useState(1)
     const [cart,setCart]= useState([])
     const [GID,setGID]= useState("")
@@ -34,7 +33,7 @@ export default function OrderPage(){
 
     const getData = async() =>{ 
         if(currentUser === null)
-        {setAuthorize(false)} // check if currentUser is logged in or not 
+        {return null} // check if currentUser is logged in or not 
         else{
         db.getCollection("Users").doc(currentUser.email).get().then(doc => {
 
@@ -47,7 +46,7 @@ export default function OrderPage(){
             }
             else if (!doc.exists)
             {
-                setAuthorize(false)
+                return null;
             }
         }).then(()=>{
             
@@ -184,7 +183,7 @@ export default function OrderPage(){
       
         const values= {GID,GNum,notes,address,city,state,postalCode,total,time}
         const checkoutvalues={cart,address,city,state,postalCode,time,total,notes,balance,UserName,TotalSpent,totalOrders}
-        if(userAuthorize)
+        if(currentUser !== null)
         {   
             switch(step)
             {
