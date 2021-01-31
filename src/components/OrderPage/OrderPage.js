@@ -177,13 +177,14 @@ export default function OrderPage(){
 
         
     }
-    function RemoveFromCart(id){
+    function RemoveFromCart(id, quantity){
         let newCart = cart;
         let Groceries =groceries;
         let reduce 
         let totalnew = total;
      
-        reduce = Groceries.find((grocery) => id===grocery[0].id)[0].price
+        reduce = Groceries.find((grocery) => id===grocery[0].id)[0].price * quantity
+        
         totalnew = totalnew - reduce        
 
         newCart = newCart.filter((item) => item.id !== id);

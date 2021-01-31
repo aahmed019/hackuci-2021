@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         margin: 'auto',
-        paddingTop: '10vh',
         maxWidth: '90vw',
         [theme.breakpoints.up('sm')]: {
             maxWidth: '50vw'
@@ -157,7 +156,7 @@ export default function Order (props) {
                             <Typography><strong>Price:</strong>${item.quantity * price}</Typography>
                         </CardContent>
                         <CardActions style={{justifyContent: 'flex-end'}}>
-                            <Button value={item.id} color="primary" size="small" onClick={(e)=>RemoveFromCart(item.id)}>Remove</Button>
+                            <Button value={item.id} color="primary" size="small" onClick={(e)=>RemoveFromCart(item.id, item.quantity)}>Remove</Button>
                         </CardActions>
                     </Card>  
                 )
