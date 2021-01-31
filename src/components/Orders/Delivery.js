@@ -1,9 +1,12 @@
 import React,{useEffect,useState} from 'react'
 import { useAuth } from '../../contexts/AuthContext';
+import {Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import {Row,Col,Button, Container} from 'react-bootstrap'
 import Card from 'react-bootstrap/Card'
 import Fire from '../../firebaseConfig'
 import Radar from 'radar-sdk-js';
+import firebase from 'firebase'
+
 export default function DeliveryPage(props){
     
     Radar.initialize('prj_live_pk_cbe4543a49822e43c633ef14259d23bf76fa1eb7')
@@ -90,6 +93,10 @@ export default function DeliveryPage(props){
             {
                 db.getCollection('Orders').doc(OID).update({
                 deliverer: staffEmail
+                }).then(() =>{
+                    db.getCollection('Volunteers').doc(staffEmail).update({
+                        hours: firebase.firestore.FieldValue.increment(parseFloat(distance) * 2)
+                        })
                 })
                // updateCart(OID)
             }
