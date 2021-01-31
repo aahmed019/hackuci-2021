@@ -37,9 +37,8 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: '90vw',
         [theme.breakpoints.up('sm')]: {
             maxWidth: '50vw'
-        },
-        backgroundColor: 'red'
-    },
+        }
+    }
   }));
 
 export default function OrderPage(){
