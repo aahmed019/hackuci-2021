@@ -3,8 +3,10 @@ import React, {useEffect, useRef, useState}from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import {Link, useHistory} from 'react-router-dom'
 import Fire from '../../firebaseConfig';
-import {FormControlLabel, RadioGroup , Radio} from '@material-ui/core'
+
 import Avatar from '@material-ui/core/Avatar';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -15,6 +17,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -160,21 +164,11 @@ export default function SignUp(){
                         inputRef={passwordConfirmRef}
                     />
                     </Grid>
-                    <Grid item xs={12}>      
-                        <RadioGroup>
-                            <FormControlLabel
-                                control={<Radio   />}
-                                label="Sign Up as a Volunteer"
-                                value="Volunteers"
-                                onClick={()=>{console.log('Vol') ;setSignUpType('Volunteers')}}
-                            />
-                            <FormControlLabel
-                                control={<Radio />}
-                                value="Users"
-                                onClick={()=>{setSignUpType('Users')}}
-                                label="Sign Up as a User"
-                            />
-                        </RadioGroup>
+                    <Grid item xs={12}>                        
+                        <FormControlLabel
+                            control={<Checkbox value="allowExtraEmails" color="primary" />}
+                            label="Sign Up as a Volunteer"
+                        />
                         <input
                             accept="image/*"
                             className={classes.input}

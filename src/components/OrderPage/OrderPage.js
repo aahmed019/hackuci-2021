@@ -10,8 +10,6 @@ import { useAuth } from '../../contexts/AuthContext'
 
 
 export default function OrderPage(){
- 
-  
     const [step,setStep]= useState(1)
     const [cart,setCart]= useState([])
     const [GID,setGID]= useState("")
@@ -34,7 +32,7 @@ export default function OrderPage(){
 
     const getData = async() =>{ 
         if(currentUser === null)
-        {return null;} // check if currentUser is logged in or not 
+        {return null} // check if currentUser is logged in or not 
         else{
         db.getCollection("Users").doc(currentUser.email).get().then(doc => {
 
@@ -85,14 +83,13 @@ export default function OrderPage(){
         getData();
 
     },[])
-    
-    function AddToCart(fid,fquantity) {
+    function AddToCart(fid, fquantity) {
         let newCart = cart;
         console.log("fid: "+fid+"\n"+"fquantity: "+fquantity);
         if(fid ==="")
-        { alert("Please choose something from the list ! ")}
+        { alert("Please choose something from the list!")}
         else{
-        fquantity = parseInt( fquantity);
+        fquantity = parseInt(fquantity);
        
          if( newCart.find(item=> item.id === fid) === undefined)
          {
@@ -112,17 +109,14 @@ export default function OrderPage(){
         console.log(JSON.stringify(cart));
         
     }
-    function  CalculateTotal(){
+    function CalculateTotal(){
     
         let totalcost=0;
         let price = 0;
    
          cart.map(item=>{
-
-             price = groceries.find((grocery)=> item.id===grocery[0].id  )[0].price
-            
-          
-            totalcost = totalcost + (price* item.quantity)
+            price = groceries.find((grocery)=> item.id===grocery[0].id  )[0].price          
+            totalcost = totalcost + (price*item.quantity)
             })
 
          setTotal(totalcost)
@@ -187,16 +181,14 @@ export default function OrderPage(){
         let newCart = cart;
         let Groceries =groceries;
         let reduce 
-        let totalnew= total;
+        let totalnew = total;
      
-         reduce = Groceries.find((grocery)=> id===grocery[0].id  )[0].price
-        
-        totalnew = totalnew - reduce
- 
-        
-        newCart= newCart.filter((item) => item.id !== id);
+        reduce = Groceries.find((grocery) => id===grocery[0].id)[0].price
+        totalnew = totalnew - reduce        
 
-        setCart( newCart);
+        newCart = newCart.filter((item) => item.id !== id);
+
+        setCart(newCart);
         setTotal(totalnew);
         getData();
         
@@ -261,6 +253,11 @@ export default function OrderPage(){
             return(
                 <div >
                 <div className="background-boi">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                 <h1>You need to be logged in to view this page</h1>
                 </div>
 
