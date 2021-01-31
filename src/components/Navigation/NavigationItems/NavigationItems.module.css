@@ -1,0 +1,28 @@
+
+
+.NavigationItems ul{
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 10px;
+    list-style-type: none;
+
+}
+
+.NavigationItems li{
+    display: block;
+    margin: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+@media(min-width: 500px){
+
+    .NavigationItems li{
+        display: inline-block;
+        margin: 5px;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    
+}
