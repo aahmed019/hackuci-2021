@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
   },
@@ -31,8 +31,16 @@ const useStyles = makeStyles({
     height: 0,
     paddingTop: '56.25%', // 16:9,
     marginTop:'30'
+  },
+  container: {
+      margin: 'auto',
+      paddingTop: '15vh',
+      maxWidth: '90vw',
+      [theme.breakpoints.up('sm')]: {
+          maxWidth: '50vw'
+      }
   }
-});
+}));
 
 export default function Users(){
 
@@ -96,7 +104,7 @@ export default function Users(){
   }
 
     return (
-      <Container style ={{margin:'auto', paddingTop:'20vh', maxWidth: '90vw'}}>
+      <Container className = {classes.container}>
         <Card className={classes.root} variant="outlined" style={{backgroundColor:"#f8f8ff"}}>
           <CardMedia
             className={classes.media}
