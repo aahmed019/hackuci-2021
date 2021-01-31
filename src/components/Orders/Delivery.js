@@ -4,7 +4,8 @@ import {Row,Col,Button, Container} from 'react-bootstrap'
 import Card from 'react-bootstrap/Card'
 import Fire from '../../firebaseConfig'
 import Radar from 'radar-sdk-js';
-
+import { waitFor } from '@testing-library/react';
+import {autocomplete} from 'radar-sdk-js';
 export default function DeliveryPage(props){
     
     Radar.initialize('prj_live_pk_cbe4543a49822e43c633ef14259d23bf76fa1eb7')
@@ -22,40 +23,47 @@ export default function DeliveryPage(props){
     const[ordAddress, setOrdAddress] = useState('')
    // const [cart,setCart]= useState([])
 
-    function first(address){
-     Radar.autocomplete({
-        query: address,
-        limit: 1
-      }, function(err, result) {
-        if (!err) {
-            setOriginal({...result.addresses})
-        }
-      });
-      second()
-   }
 
-    async function second(){
-     Radar.autocomplete({
-        query: volAddress,
-        limit: 1
-      }, function(err, result) {
-        if (!err) {
-            setDestination({...result.addresses})
-        }
-      })   
+    const Ret=(data)=>{
+        return data;
     }
 
+    function getCoord(data){
+        // console.log(typeof(data.address))
+        let coord={};
+        
+       Radar.autocomplete({
+            query: data.address,
+            limit: 10
+          }, (err, result)=> {
+            if (!err) {
+              
+              setOriginal(result.addresses[0])
+              return result;
+            }
+            else{
+                console.log(err)
+            }
+          });
+
+
+
+          return coord;
+   }
+
+
   
-    function getDist(){
-    
+    function getDist(org, dest){
+     let dist ="";
+     console.log(org)
      Radar.getDistance({
         origin: {
-          latitude: original[0].latitude,
-          longitude: original[0].longitude
+          latitude: org.latitude,
+          longitude: org.longitude
         },
         destination: {
-            latitude: destination[0].latitude,
-            longitude: destination[0].longitude
+            latitude: dest.latitude,
+            longitude: dest.longitude
         },
         modes: [
           'foot',
@@ -63,12 +71,13 @@ export default function DeliveryPage(props){
         units: 'imperial'
       }, function(err, result) {
         if (!err) {
-            setDistance(result.routes.foot.distance.text)
+            dist=result.routes.foot.distance.text
         }
         else{
             console.log(err)
         }
       });
+      return dist;
    }
 
     const Bid=(OID)=>{
@@ -111,8 +120,10 @@ export default function DeliveryPage(props){
     },[])
 
     const getData=()=>{
-             db.getCollection("Volunteers").doc(currentUser.email).get().then(doc => {
 
+             db.getCollection("Volunteers").doc(currentUser.email).get().then(doc => {
+        
+                
             if(doc.exists){
                 const data = doc.data();
                 setStaffEmail(data.email)
@@ -124,22 +135,29 @@ export default function DeliveryPage(props){
             {
                 alert("No information available")
             }
+            return doc.data()
+           
+        }).then((RespData)=>{
 
-        }).then(() => {
-            console.log('HHHHHHHHHHHHHHHHHHHH')
-            console.log(volAddress)
-        }).then(()=>{
+            getCoord(RespData)
+            const Voladdress = original;
+            console.log(Voladdress);    
+            // console.log(Voladdress);
             let order = [];
              db.getCollection("Orders").where('type','==','delivery').get().then(snapshot => {
                
                 snapshot.forEach(doc => {
-                    const data = doc.data();
+                      const Orgaddress = getCoord(doc.data())   
+                    //   console.log(Orgaddress)               
+                    // const Distance = getDist(Voladdress, Orgaddress)
+                    const data = {...doc.data() };
+                    // console.log(data)
                     order.push([data, doc.id]);
 
                 })
                 //alert(JSON.stringify(order))
                 order = order.filter(item=> item[0].deliverer === "")
-                console.log(JSON.stringify(order))
+                //console.log(JSON.stringify(order))
                 setOrder(order)
 
 
@@ -187,11 +205,8 @@ export default function DeliveryPage(props){
                         <span>
                         <Button variant="primary"   onClick={()=>Bid(data[1])} >Bid</Button>
 
-                        <h1>{distance}</h1>
-                        <h1>{parseFloat(distance) * 2} hours in total!</h1>
-                        <button onClick={() => first(data[0].address)}>Get Coords</button>
-                        <button onClick={() => getDist()}>Get Distance</button>
-
+                        <h1>{data[0].distance}</h1>
+                        <h1>{parseFloat(data[0].distance) * 2} hours in total!</h1>
                         </span>
                     </Card.Header>
                     

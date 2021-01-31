@@ -89,7 +89,7 @@ export default function Users(){
 
   useEffect(() =>{
     getData()
-},[getData])
+},[])
 
 
   async function handleLogout() {
@@ -97,7 +97,7 @@ export default function Users(){
     setEmail('')
     try {
       await logout()
-      history.push("/")
+      history.push("/Login")
     } catch {
       setError("Failed to log out")
     }

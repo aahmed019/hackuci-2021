@@ -11,7 +11,7 @@ import { useAuth } from '../../contexts/AuthContext'
 
 export default function OrderPage(){
  
-    const [userAuthorize, setAuthorize] = useState(true);
+  
     const [step,setStep]= useState(1)
     const [cart,setCart]= useState([])
     const [GID,setGID]= useState("")
@@ -34,7 +34,7 @@ export default function OrderPage(){
 
     const getData = async() =>{ 
         if(currentUser === null)
-        {setAuthorize(false)} // check if currentUser is logged in or not 
+        {return null;} // check if currentUser is logged in or not 
         else{
         db.getCollection("Users").doc(currentUser.email).get().then(doc => {
 
@@ -47,8 +47,23 @@ export default function OrderPage(){
             }
             else if (!doc.exists)
             {
-                setAuthorize(false)
+                return null;
             }
+        }).then(()=>{
+            db.getCollection("Volunteers").doc(currentUser.email).get().then(doc => {
+
+                if(doc.exists){
+                    const data = doc.data();
+                    setTotalOrders(data.orderHistory.length);
+                    setUserName(data.name);
+                    setBalance(data.Balance);
+                    
+                }
+                else if (!doc.exists)
+                {
+                    return null;
+                }
+            })
         }).then(()=>{
             
             db.getCollection("Groceries").get().then(snapshot => {
@@ -189,7 +204,7 @@ export default function OrderPage(){
       
         const values= {GID,GNum,notes,address,city,state,postalCode,total,time}
         const checkoutvalues={cart,address,city,state,postalCode,time,total,notes,balance,UserName,TotalSpent,totalOrders}
-        if(userAuthorize)
+        if(currentUser !== null)
         {   
             switch(step)
             {
@@ -240,7 +255,7 @@ export default function OrderPage(){
          }
 
         }
-        else if(currentUser === null)
+        else 
         {
             return(
                 <div >
@@ -252,14 +267,5 @@ export default function OrderPage(){
                 </div>
            )
         }
-        else{
-            return(
-                <div>
-                <div div className="background-boi">
-                <h1>You need to be signed up to view this page</h1>
-                </div>
 
-                </div>
-           )
-        }
     }
