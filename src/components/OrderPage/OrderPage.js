@@ -70,13 +70,13 @@ export default function OrderPage(){
         getData();
 
     },[])
-    function AddToCart(fid,fquantity) {
+    function AddToCart(fid, fquantity) {
         let newCart = cart;
         console.log("fid: "+fid+"\n"+"fquantity: "+fquantity);
         if(fid ==="")
-        { alert("Please choose something from the list ! ")}
+        { alert("Please choose something from the list!")}
         else{
-        fquantity = parseInt( fquantity);
+        fquantity = parseInt(fquantity);
        
          if( newCart.find(item=> item.id === fid) === undefined)
          {
@@ -96,17 +96,14 @@ export default function OrderPage(){
         console.log(JSON.stringify(cart));
         
     }
-    function  CalculateTotal(){
+    function CalculateTotal(){
     
         let totalcost=0;
         let price = 0;
    
          cart.map(item=>{
-
-             price = groceries.find((grocery)=> item.id===grocery[0].id  )[0].price
-            
-          
-            totalcost = totalcost + (price* item.quantity)
+            price = groceries.find((grocery)=> item.id===grocery[0].id  )[0].price          
+            totalcost = totalcost + (price*item.quantity)
             })
 
          setTotal(totalcost)
@@ -171,16 +168,14 @@ export default function OrderPage(){
         let newCart = cart;
         let Groceries =groceries;
         let reduce 
-        let totalnew= total;
+        let totalnew = total;
      
-         reduce = Groceries.find((grocery)=> id===grocery[0].id  )[0].price
-        
-        totalnew = totalnew - reduce
- 
-        
-        newCart= newCart.filter((item) => item.id !== id);
+        reduce = Groceries.find((grocery) => id===grocery[0].id)[0].price
+        totalnew = totalnew - reduce        
 
-        setCart( newCart);
+        newCart = newCart.filter((item) => item.id !== id);
+
+        setCart(newCart);
         setTotal(totalnew);
         getData();
         
