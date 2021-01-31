@@ -10,7 +10,6 @@ import { useAuth } from '../../contexts/AuthContext'
 
 
 export default function OrderPage(){
-
     const [step,setStep]= useState(1)
     const [cart,setCart]= useState([])
     const [GID,setGID]= useState("")
@@ -48,6 +47,21 @@ export default function OrderPage(){
             {
                 return null;
             }
+        }).then(()=>{
+            db.getCollection("Volunteers").doc(currentUser.email).get().then(doc => {
+
+                if(doc.exists){
+                    const data = doc.data();
+                    setTotalOrders(data.orderHistory.length);
+                    setUserName(data.name);
+                    setBalance(data.Balance);
+                    
+                }
+                else if (!doc.exists)
+                {
+                    return null;
+                }
+            })
         }).then(()=>{
             
             db.getCollection("Groceries").get().then(snapshot => {
@@ -234,7 +248,7 @@ export default function OrderPage(){
          }
 
         }
-        else if(currentUser === null)
+        else 
         {
             return(
                 <div >
@@ -251,19 +265,5 @@ export default function OrderPage(){
                 </div>
            )
         }
-        else{
-            return(
-                <div>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                <div div className="background-boi">
-                <h1>You need to be signed up to view this page</h1>
-                </div>
 
-                </div>
-           )
-        }
     }
