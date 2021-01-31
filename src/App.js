@@ -46,6 +46,7 @@ console.log(useAuth());
             <Route path="/Confirmation" component={Confirmation}/>
             <Route path='/Login' component={Login}/>
             <Route path='/SignUp' component={SignUp}/>
+            <Redirect from="/" to="/Login" />
             <Route path='/' render={()=> <h1>404 Page Not available</h1>} />
          </Switch>
           </div>
