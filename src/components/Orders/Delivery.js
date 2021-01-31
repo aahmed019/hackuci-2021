@@ -1,18 +1,12 @@
 import React,{useEffect,useState} from 'react'
 import { useAuth } from '../../contexts/AuthContext';
-import {Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import {Row,Col,Button, Container} from 'react-bootstrap'
 import Card from 'react-bootstrap/Card'
 import Fire from '../../firebaseConfig'
 import Radar from 'radar-sdk-js';
-<<<<<<< HEAD
-import { waitFor } from '@testing-library/react';
-import {autocomplete} from 'radar-sdk-js';
-=======
 import firebase from 'firebase'
 
 
->>>>>>> e69cdf761a8c0e13b328595f1d6e926f7de6af8a
 export default function DeliveryPage(props){
     
     Radar.initialize('prj_live_pk_cbe4543a49822e43c633ef14259d23bf76fa1eb7')
