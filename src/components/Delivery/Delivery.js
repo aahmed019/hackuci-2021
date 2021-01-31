@@ -1,12 +1,51 @@
 import React,{useEffect,useState} from 'react'
 import { useAuth } from '../../contexts/AuthContext';
-import {Row,Col,Button, Container} from 'react-bootstrap'
-import Card from 'react-bootstrap/Card'
+import {Row,Col} from 'react-bootstrap'
 import Fire from '../../firebaseConfig'
 import Radar from 'radar-sdk-js';
 import firebase from 'firebase'
 
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import CardMedia from '@material-ui/core/CardMedia';
+import Container from '@material-ui/core/Container';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+      minWidth: 275,
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)',
+    },
+    title: {
+      fontSize: 14,
+    },
+    pos: {
+      marginBottom: 12,
+    },
+    media: {
+      height: 0,
+      paddingTop: '56.25%', // 16:9,
+      marginTop:'30'
+    },
+    container: {
+        margin: 'auto',
+        maxWidth: '90vw',
+        [theme.breakpoints.up('sm')]: {
+            maxWidth: '50vw'
+        }
+    }
+  }));
+
 export default function DeliveryPage(props){
+
+    const classes = useStyles();
     
     Radar.initialize('prj_live_pk_cbe4543a49822e43c633ef14259d23bf76fa1eb7')
     const db =Fire.db;
@@ -158,108 +197,55 @@ export default function DeliveryPage(props){
     }
 
     const showorda = orders
-    if(showorda.length)
-    {
+    if(showorda.length){
     //console.log(JSON.stringify(showorda))
     return(
-    <div>
-    <div>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-   
-    <h1>Delivery Page</h1>
-    
-        
-     {
-      
-      showorda && showorda.map((data,i) => {
-        return( <Row className="DRows" key={i} >
-                <Col xs="auto" >
-                <Card
-                    bg='Dark'
-                    key={i}
-                    style={{ width: '100%' }}
-                     className="mb-2"
-                 >
-                    <Card.Header style={{display: 'flex',flexDirection: 'row',alignItems:'center',justifyContent:'space-between' }}>
-                        <span>Order : {data[1]} 
-                        </span>
-                        <span>
-                        <Button variant="primary"   onClick={()=>Bid(data[1])} >Bid</Button>
-                        <h1>{distance}</h1>
-                        <h1>{parseFloat(distance) * 2} hours in total!</h1>
-                        <button onClick={() => first(data[0].address)}>Get Coords</button>
-                        <button onClick={() => getDist()}>Get Distance</button>
-                        </span>
-                    </Card.Header>
-                    
-                    <Card.Body>
-                        <p>Name:  {data[0].userName}</p>
-                        <p>Address: {data[0].address}</p>
-                        <Row className="DRows">
-                            <Col xs={4}>Items</Col>
-                            <Col xs={4}>Quantity</Col>
-                            <Col xs={4}>Price/unit</Col>
-                        </Row>
-                        
-                         {
-                        data[0].items.map(item=>{
-                            let price;
-                            let obj=[];
-                           
-                                obj=groceries.filter(m=>m[0].id === item.id)[0]
-                                if(obj)
-                                price=obj[0].price
+        <Container className = {classes.container}>
+            <Typography variant="h5" component="h1"><strong>Delivery</strong></Typography><br></br>
+            {showorda && showorda.map((data,i) => {
+                return(
+                    <div style = {{paddingBottom:'5vh'}}>
+                        <Card className={classes.root} variant="outlined" style={{backgroundColor:"#f8f8ff"}}>
+                            <CardContent style={{textAlign: 'left'}}>
+                                <Typography variant="h5" component="h2"><strong>Order ID:</strong>{data[1]}</Typography>
+                                <Typography><strong>Name:</strong>{data[0].userName}</Typography>      
+                                <Typography><strong>Address:</strong>{data[0].address}</Typography>
+                                {data[0].items.map(item=>{
+                                    let price;
+                                    let obj=[];
 
+                                    obj=groceries.filter(m=>m[0].id === item.id)[0]
+                                    if(obj)
+                                        price=obj[0].price
 
-                            return(<Row key={item.id} className="DRows"> 
-                                    <Col xs={4}>
-                                        {item.id}
-                                    </Col>  
-                                    <Col xs={4}>
-                                        {item.quantity}
-                                    </Col>
-                                    <Col xs={4}>
-                                        {price} 
-                                    </Col>
-                                   </Row>)})
-                        } 
-                        
-                        <Row className="DRows">
-                            <Col xs={4}></Col>
-                            <Col xs={4}><strong>Total:</strong></Col> 
-                            <Col xs={4}>$ {data[0].total}</Col>
-                        </Row>
-                    </Card.Body>
-                </Card>
-                </Col>
-                    
-                        
-                </Row>
-              )})}
-    
-
-    
-    
-   
-    </div>
-    </div>)
-    }
-    else{
-        return(<div>
-            <div>
-           <br/>
-           <br/>
-           <br/>
-           <br/>
-            <h1>Delivery Page</h1>
-            <h4>
-                No orders available
-            </h4>
-            </div>
-            </div>
-            )
+                                    return(
+                                        <div>
+                                            <Typography><strong>Items:</strong>{item.id}</Typography>
+                                            <Typography><strong>Quantity:</strong>{item.quantity}</Typography>
+                                            <Typography><strong>Price:</strong>{price}</Typography>
+                                        </div>
+                                    )
+                                })}
+                                <Typography><strong>Total:</strong>${data[0].total}</Typography>
+                                <Typography><strong>Distance:</strong>{distance}</Typography>      
+                                <Typography><strong>Total Hours:</strong>{parseFloat(distance) * 2}</Typography>
+                            </CardContent>
+                            <CardActions style={{justifyContent: 'flex-end'}}>
+                                <Button color="primary" size="small" onClick={() => first(data[0].address)}>Get Coords</Button>
+                                <Button color="primary" size="small" onClick={() => getDist()}>Get Distance</Button>
+                                <Button color="primary" size="small" onClick={()=>Bid(data[1])} >Bid</Button>
+                            </CardActions>
+                        </Card>
+                    </div>
+                )
+            })}
+        </Container>
+    )}else{
+        return(
+            <Container className = {classes.container}>
+                <Typography variant="h5" component="h1"><strong>Delivery</strong></Typography>
+                <Typography variant="h5" component="h2"><strong>No Orders Available</strong></Typography>
+            </Container>
+        )
     }
 }
