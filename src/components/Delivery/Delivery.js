@@ -207,9 +207,9 @@ export default function DeliveryPage(props){
                     <div style = {{paddingBottom:'5vh'}}>
                         <Card className={classes.root} variant="outlined" style={{backgroundColor:"#f8f8ff"}}>
                             <CardContent style={{textAlign: 'left'}}>
-                                <Typography variant="h5" component="h2"><strong>Order ID:</strong>{data[1]}</Typography>
-                                <Typography><strong>Name:</strong>{data[0].userName}</Typography>      
-                                <Typography><strong>Address:</strong>{data[0].address}</Typography>
+                                <Typography variant="h5" component="h2"><strong>Order ID:</strong> {data[1]}</Typography>
+                                <Typography><strong>Name:</strong> {data[0].userName}</Typography>      
+                                <Typography><strong>Address:</strong> {data[0].address}</Typography>
                                 {data[0].items.map(item=>{
                                     let price;
                                     let obj=[];
@@ -220,15 +220,15 @@ export default function DeliveryPage(props){
 
                                     return(
                                         <div>
-                                            <Typography><strong>Items:</strong>{item.id}</Typography>
-                                            <Typography><strong>Quantity:</strong>{item.quantity}</Typography>
-                                            <Typography><strong>Price:</strong>{price}</Typography>
+                                            <Typography><strong>Items:</strong> {item.id}</Typography>
+                                            <Typography><strong>Quantity:</strong> {item.quantity}</Typography>
+                                            <Typography><strong>Price:</strong> {price}</Typography>
                                         </div>
                                     )
                                 })}
-                                <Typography><strong>Total:</strong>${data[0].total}</Typography>
-                                <Typography><strong>Distance:</strong>{distance}</Typography>      
-                                <Typography><strong>Total Hours:</strong>{parseFloat(distance) * 2}</Typography>
+                                <Typography><strong>Total:</strong> ${data[0].total}</Typography>
+                                <Typography><strong>Distance:</strong> {distance}</Typography>      
+                                <Typography><strong>Total Hours:</strong> {parseFloat(distance) * 2}</Typography>
                             </CardContent>
                             <CardActions style={{justifyContent: 'flex-end'}}>
                                 <Button color="primary" size="small" onClick={() => first(data[0].address)}>Get Coords</Button>

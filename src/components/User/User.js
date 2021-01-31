@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
       margin: 'auto',
-      paddingTop: '15vh',
       maxWidth: '90vw',
       [theme.breakpoints.up('sm')]: {
           maxWidth: '50vw'
@@ -103,13 +102,33 @@ export default function Users(){
     }
   }
 
+  if(position !== ""){
     return (
       <Container className = {classes.container}>
         <Card className={classes.root} variant="outlined" style={{backgroundColor:"#f8f8ff"}}>
           <CardMedia
             className={classes.media}
-            image='https://static.wikia.nocookie.net/surrealmemes/images/b/b5/Ba.png/revision/latest?cb=20200325160337'
-            title="Scary Spider"
+            image='https://picsum.photos/200/300'
+          />        
+          <CardContent style={{textAlign: 'left'}}>
+            <Typography variant="h5" component="h2"><strong>Username:</strong> {userName}</Typography>
+            <Typography><strong>Email:</strong> {email}</Typography>      
+            <Typography><strong>Name:</strong> {name}</Typography>
+            <Typography><strong>Hours:</strong> {hours}</Typography>
+          </CardContent>
+          <CardActions style={{justifyContent: 'flex-end'}}>
+            <Button color="primary" size="small" onClick={handleLogout}>Log Out</Button>
+          </CardActions>
+        </Card>
+      </Container>
+    )
+  }else{
+    return (
+      <Container className = {classes.container}>
+        <Card className={classes.root} variant="outlined" style={{backgroundColor:"#f8f8ff"}}>
+          <CardMedia
+            className={classes.media}
+            image='https://picsum.photos/200/300'
           />        
           <CardContent style={{textAlign: 'left'}}>
             <Typography variant="h5" component="h2"><strong>Username:</strong> {userName}</Typography>
@@ -122,4 +141,5 @@ export default function Users(){
         </Card>
       </Container>
     )
+  }
 }
