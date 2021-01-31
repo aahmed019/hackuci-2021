@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState}from 'react'
-import {Form, Card, Alert} from 'react-bootstrap'
+
 import { useAuth } from '../../contexts/AuthContext'
 import {Link, useHistory} from 'react-router-dom'
 import Fire from '../../firebaseConfig';
@@ -8,10 +8,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -48,8 +47,8 @@ export default function SignUp(){
     const passwordConfirmRef = useRef();
     const {signup} = useAuth();
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [signUpType, setSignUpType] = useState('User');
+
+    const [signUpType, setSignUpType] = useState('Users');
 
     const history = useHistory();
     let db = Fire.db;
@@ -62,35 +61,28 @@ export default function SignUp(){
             return setError('passwords do not match')
         }
             setError('');
-            setLoading(true);
 
-            await signup(emailRef.current.value, passwordRef.current.value).then(response =>{
 
-                db.getCollection('SignUp').doc(emailRef.current.value).set({
-                    username: userRef.current.value,
-                    password: passwordRef.current.value,
-                    name: nameRef.current.value,
-                    email: emailRef.current.value,
-                    name: nameRef.current.value,
-                    hours: 0,
-                    balance: 0,
-                    orderHistory: [],
-                    }).then(() => {
-                        console.log('Sign up Successful !');
-                    })
-                    .catch(error => {                           
-                        console.error("Error writing document: ", error);
-                        setError(error);
-                        
-                    });
 
-            }).catch(error=> {
-                console.log(error.message);
-                setError(error.message);
-            });
-            history.push('/Confirmation')
-        setLoading(false)
-    }
+            const userData={
+                username: userRef.current.value,
+                password: passwordRef.current.value,
+                name: nameRef.current.value,
+                email: emailRef.current.value,
+                hours: 0,
+                balance: 0,
+                orderHistory: [],
+            }
+               await signup(emailRef.current.value, passwordRef.current.value)
+                .then(()=>{
+                    db.getCollection(signUpType).doc(emailRef.current.value).set(userData);
+                    history.push('/Confirmation');
+                })
+                .catch(error=>{
+                    //console.log(error);
+                    setError(error.message);
+                })
+            }
 
     return(
         <Container component="main" maxWidth="xs">

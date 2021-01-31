@@ -24,4 +24,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+<<<<<<< HEAD
+#eslintcache
+=======
+>>>>>>> 52753f0742382f17baa1dc6ca09819a1064720c2
 .eslintcache
