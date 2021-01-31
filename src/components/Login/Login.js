@@ -53,11 +53,11 @@ export default function Login(props){
       await database.getCollection(loginType).doc(emailRef.current.value).get().then(function(doc){
         console.log(doc.data());
           if(doc.exists){
-              if(doc.data().Position === null){
-                history.push('/User');
+              if(doc.data().Position === 'Volunteer'){
+                history.push('/Volunteer');
               }
               else{
-                history.push('/Volunteer')
+                history.push('/User')
               }
             }
           else{
