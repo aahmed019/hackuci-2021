@@ -5,6 +5,8 @@ import {Link, useHistory} from 'react-router-dom'
 import Fire from '../../firebaseConfig';
 import {FormControlLabel, RadioGroup , Radio} from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox'
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';

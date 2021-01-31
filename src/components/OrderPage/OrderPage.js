@@ -245,6 +245,11 @@ export default function OrderPage(){
             return(
                 <div >
                 <div className="background-boi">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                 <h1>You need to be logged in to view this page</h1>
                 </div>
 
@@ -255,6 +260,11 @@ export default function OrderPage(){
         else{
             return(
                 <div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                 <div div className="background-boi">
                 <h1>You need to be signed up to view this page</h1>
                 </div>
