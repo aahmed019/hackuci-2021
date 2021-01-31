@@ -7,11 +7,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import {FormControlLabel, RadioGroup , Radio} from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Fire from '../../firebaseConfig';
+
 const useStyles = makeStyles((theme) => ({
     paper: {
       marginTop: theme.spacing(8),
@@ -33,10 +35,11 @@ const useStyles = makeStyles((theme) => ({
 
   }));
 
-export default function Login(){
+export default function Login(props){
 
     const classes = useStyles();
-
+    
+    const [loginType, setLogInType] = useState('Users');
     const emailRef = useRef();
     const passwordRef = useRef();
     const { login, currentUser } = useAuth();
@@ -46,6 +49,22 @@ export default function Login(){
     let database =Fire.db;
 
 
+  async function checkUser(){
+      await database.getCollection(loginType).doc(emailRef.current.value).get().then(function(doc){
+        console.log(doc.data());
+          if(doc.exists){
+              if(doc.data().Position === null){
+                history.push('/User');
+              }
+              else{
+                history.push('/Volunteer')
+              }
+            }
+          else{
+            return;
+          }
+      })
+  }
     
     async function handleSubmit(e){
         e.preventDefault()
@@ -53,15 +72,18 @@ export default function Login(){
         console.log("emailRef " + emailRef.current.value)
         console.log("passwordRef " + passwordRef.current.value)
         
-        try {
+       
             setError('')
             setLoading(true)
-            await login(emailRef.current.value, passwordRef.current.value)
-            console.log(login)
-            history.push('/User')
-        } catch{
-            setError('Failed to sign in. Please try again!')
-        }
+             login(emailRef.current.value, passwordRef.current.value).then(()=>{
+              checkUser();
+             })
+             .catch(err => console.log)
+           
+            
+            
+            //history.push('/User')
+
         setLoading(false)
     }
 
@@ -100,6 +122,20 @@ export default function Login(){
               autoComplete="current-password"
 
             />
+                                    <RadioGroup>
+                            <FormControlLabel
+                                control={<Radio   />}
+                                label="Sign In as a Volunteer"
+                                value="Volunteers"
+                                onClick={()=>{ ;setLogInType('Volunteers')}}
+                            />
+                            <FormControlLabel
+                                control={<Radio />}
+                                value="Users"
+                                onClick={()=>{setLogInType('Users')}}
+                                label="Sign In as a User"
+                            />
+                        </RadioGroup>
             <Button
               type="submit"
               fullWidth
@@ -118,6 +154,7 @@ export default function Login(){
         </div>
         <Box mt={8}>
         </Box>
+        
       </Container>
     );
 }
