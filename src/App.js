@@ -6,6 +6,7 @@ import Confirmation from './components/Confirmation/Confirmation';
 import {BrowserRouter,Switch, Route, Redirect} from 'react-router-dom';
 import {AuthProvider} from './contexts/AuthContext';
 import SideDrawer from './components/Navigation/SideDrawer/SideDrawer';
+import Delivery from './components/Orders/Delivery';
 import Toolbar from './components/Navigation/Toolbar/Toolbar';
 import './App.css';
 import Users from './components/User/User'
@@ -36,6 +37,7 @@ const  App = (props)=> {
             <Route path="/Home"  component = {Users}/>
             <Route path="/User" component={Users}/>
             <Route path="Volunteer"/>
+            <Route path="/Delivery" component={Delivery}/>
             <Route path="/Order" component={OrderPage}/>
             <Route path="/Confirmation" component={Confirmation}/>
             <Redirect from="/" to="/Login"/>
