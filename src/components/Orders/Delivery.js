@@ -4,6 +4,7 @@ import {Row,Col,Button, Container} from 'react-bootstrap'
 import Card from 'react-bootstrap/Card'
 import Fire from '../../firebaseConfig'
 import Radar from 'radar-sdk-js';
+
 export default function DeliveryPage(props){
     
     Radar.initialize('prj_live_pk_cbe4543a49822e43c633ef14259d23bf76fa1eb7')
@@ -16,6 +17,7 @@ export default function DeliveryPage(props){
     const[groceries,setGroceries]=useState([])
     const[original, setOriginal] = useState({})
     const[destination, setDestination] = useState({})
+
     const[volAddress, setVolAddress] = useState('')
     const[ordAddress, setOrdAddress] = useState('')
    // const [cart,setCart]= useState([])
@@ -110,17 +112,19 @@ export default function DeliveryPage(props){
 
     const getData=()=>{
              db.getCollection("Volunteers").doc(currentUser.email).get().then(doc => {
-            
+
             if(doc.exists){
                 const data = doc.data();
                 setStaffEmail(data.email)
                 setType(data.Position)
                 setVolAddress(data.address)
+
             }
             else
             {
                 alert("No information available")
             }
+
         }).then(() => {
             console.log('HHHHHHHHHHHHHHHHHHHH')
             console.log(volAddress)
@@ -131,6 +135,7 @@ export default function DeliveryPage(props){
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     order.push([data, doc.id]);
+
                 })
                 //alert(JSON.stringify(order))
                 order = order.filter(item=> item[0].deliverer === "")
@@ -148,7 +153,6 @@ export default function DeliveryPage(props){
                 setGroceries(d)
         })}).catch(error=> console.log("Error: ",error))
 
-        
     }
 
     const showorda = orders
@@ -182,10 +186,12 @@ export default function DeliveryPage(props){
                         </span>
                         <span>
                         <Button variant="primary"   onClick={()=>Bid(data[1])} >Bid</Button>
+
                         <h1>{distance}</h1>
                         <h1>{parseFloat(distance) * 2} hours in total!</h1>
                         <button onClick={() => first(data[0].address)}>Get Coords</button>
                         <button onClick={() => getDist()}>Get Distance</button>
+
                         </span>
                     </Card.Header>
                     
@@ -235,7 +241,7 @@ export default function DeliveryPage(props){
               )})}
     
 
-    
+
     
    
     </div>

@@ -3,7 +3,7 @@ import React, {useEffect, useRef, useState}from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import {Link, useHistory} from 'react-router-dom'
 import Fire from '../../firebaseConfig';
-
+import {FormControlLabel, RadioGroup , Radio} from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -160,11 +160,21 @@ export default function SignUp(){
                         inputRef={passwordConfirmRef}
                     />
                     </Grid>
-                    <Grid item xs={12}>                        
-                        <FormControlLabel
-                            control={<Checkbox value="allowExtraEmails" color="primary" />}
-                            label="Sign Up as a Volunteer"
-                        />
+                    <Grid item xs={12}>      
+                        <RadioGroup>
+                            <FormControlLabel
+                                control={<Radio   />}
+                                label="Sign Up as a Volunteer"
+                                value="Volunteers"
+                                onClick={()=>{console.log('Vol') ;setSignUpType('Volunteers')}}
+                            />
+                            <FormControlLabel
+                                control={<Radio />}
+                                value="Users"
+                                onClick={()=>{setSignUpType('Users')}}
+                                label="Sign Up as a User"
+                            />
+                        </RadioGroup>
                         <input
                             accept="image/*"
                             className={classes.input}
