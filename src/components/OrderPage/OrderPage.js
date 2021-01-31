@@ -85,6 +85,7 @@ export default function OrderPage(){
         getData();
 
     },[])
+    
     function AddToCart(fid,fquantity) {
         let newCart = cart;
         console.log("fid: "+fid+"\n"+"fquantity: "+fquantity);
